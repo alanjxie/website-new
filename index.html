@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Alan Xie — Signal & Systems</title>
+    <title>Alan Xie</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -37,9 +38,9 @@
             <div class="folder-panel" id="folder-projects" role="region" aria-labelledby="title-projects" inert>
               <div class="folder-heading"><h2 id="title-projects">Projects</h2><button type="button" class="folder-close" aria-label="Close Projects">×</button></div>
               <ul class="folder-projects">
-                <li><span class="portfolio-index">01 / Signal processing</span><h3>SDR Signal Analysis and Demodulation</h3></li>
-                <li><span class="portfolio-index">02 / Digital hardware</span><h3>DMA-to-FFT FPGA Spectrum Analyzer</h3></li>
-                <li><span class="portfolio-index">03 / RF Systems</span><h3>E2E RF Frontend System</h3></li>
+                <li data-project-detail="sdr"><span class="portfolio-index">01 / Signal processing</span><h3>SDR Signal Analysis and Demodulation</h3></li>
+                <li data-project-detail="fpga"><span class="portfolio-index">02 / Digital hardware</span><h3>DMA-to-FFT FPGA Spectrum Analyzer</h3></li>
+                <li data-project-detail="rf"><span class="portfolio-index">03 / RF Systems</span><h3>E2E RF Frontend System</h3></li>
               </ul>
             </div>
           </div>
@@ -97,7 +98,9 @@
     <script src="main.js"></script>
     <script src="spectrum-renderer.js"></script>
     <script src="sinc-wave.js"></script>
+    <script src="portfolio-data.js"></script>
     <script src="experience.js"></script>
     <script src="folder-nav.js"></script>
+    <script src="portfolio-details.js"></script>
   </body>
 </html>

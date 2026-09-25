@@ -3,13 +3,19 @@
   document.querySelectorAll('.folder-nav').forEach((nav) => {
     const folders = [...nav.querySelectorAll('.folder')];
     const setOpen = (folder, open) => {
+      if (!open) folder.dispatchEvent(new Event('folderclose'));
       folder.classList.toggle('is-open', open);
       folder.querySelector('button').setAttribute('aria-expanded', String(open));
       folder.querySelector('.folder-panel').inert = !open;
     };
+    const hasDetail = () => folders.some(folder => folder.querySelector('.folder-panel').dataset.detailOpen === 'true');
     const closeAll = () => folders.forEach(folder => setOpen(folder, false));
     folders.forEach(folder => {
+      const panel = folder.querySelector('.folder-panel');
+      panel.addEventListener('click', event => event.stopPropagation());
       folder.querySelector('button').addEventListener('click', () => {
+        // Folder tabs lie outside a detail panel: dismiss, rather than navigate away.
+        if (hasDetail()) { closeAll(); return; }
         const opening = !folder.classList.contains('is-open');
         closeAll();
         setOpen(folder, opening);
@@ -30,10 +36,13 @@
       }));
     });
     document.addEventListener('click', event => {
-      if (!nav.contains(event.target)) closeAll();
+      // Use the original event path even if a Back action removed its target.
+      const path = event.composedPath();
+      if (folders.some(folder => path.includes(folder.querySelector('.folder-panel')))) return;
+      if (hasDetail() || !path.includes(nav)) closeAll();
     });
     nav.addEventListener('keydown', event => {
-      if (event.key !== 'Escape') return;
+      if (event.key !== 'Escape' || hasDetail()) return;
       const open = folders.find(folder => folder.classList.contains('is-open'));
       if (open) {
         event.preventDefault();
@@ -42,7 +51,7 @@
       }
     });
     nav.addEventListener('focusout', event => {
-      if (!nav.contains(event.relatedTarget)) closeAll();
+      if (!hasDetail() && !nav.contains(event.relatedTarget)) closeAll();
     });
   });
 })();

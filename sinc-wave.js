@@ -33,6 +33,8 @@
       this.resettingBandwidth = false;
       this.filterState = { amplitude: 0.84, timeShift: 0, bandwidth: 1, centerFrequency: 0, controlMode: 'time' };
       this.spectrum = new window.SpectrumRenderer();
+      this.drag = null;
+      this.coarsePointer = matchMedia('(pointer: coarse)');
       this.motion = matchMedia('(prefers-reduced-motion: reduce)');
       this.events = new AbortController();
       const options = { signal: this.events.signal };
@@ -65,6 +67,7 @@
         }, options);
         this.closest('.hero-wave').querySelectorAll('button[data-control-mode]').forEach(button => {
           button.addEventListener('click', () => {
+            this.endDrag();
             this.filterState.controlMode = button.dataset.controlMode;
             this.syncBandwidthControl();
           }, options);
@@ -73,18 +76,17 @@
       }
       const move = (event) => {
         if (event.isPrimary === false || this.filterState.controlMode !== 'time') return;
-        const rect = this.canvas.getBoundingClientRect();
-        if (!rect.width || !rect.height) return;
-        this.targetCenterX = clamp((event.clientX - rect.left) / rect.width, 0, 1);
-        this.targetCursorY = clamp((event.clientY - rect.top) / rect.height, 0, 1);
+        const point = this.pointerPosition(event, this.canvas);
+        if (!point) return;
+        this.targetCenterX = point.x;
+        this.targetCursorY = point.y;
         this.animate();
       };
       const moveFrequency = (event) => {
         if (event.isPrimary === false || this.filterState.controlMode !== 'frequency') return;
-        const rect = this.frequencyCanvas.getBoundingClientRect();
-        if (!rect.width || !rect.height) return;
-        const x = clamp((event.clientX - rect.left) / rect.width, 0, 1);
-        const y = clamp((event.clientY - rect.top) / rect.height, 0, 1);
+        const point = this.pointerPosition(event, this.frequencyCanvas);
+        if (!point) return;
+        const { x, y } = point;
         this.targetCenterFrequency = (x - 0.5) * 4;
         // Normalized gain occupies the space above the fixed 90% baseline.
         // A/B is the exact Fourier gain; B-normalized display height avoids clipping.
@@ -92,19 +94,14 @@
         this.targetCursorY = (1 - amplitude) / 2;
         this.animate();
       };
-      this.frequencyCanvas.addEventListener('pointermove', moveFrequency, options);
-      this.frequencyCanvas.addEventListener('pointerdown', moveFrequency, options);
+      this.bindPlotPointer(this.frequencyCanvas, 'frequency', moveFrequency, options);
       const reset = () => {
         this.targetCenterX = 0.5;
         this.targetCursorY = 0.08;
         this.animate();
       };
-      // Only the selected domain accepts pointer input. Keep the chosen state when
-      // moving to the response or slider so both views can be compared directly.
-      this.canvas.addEventListener('pointermove', move, options);
-      this.canvas.addEventListener('pointerdown', move, options);
-      this.canvas.addEventListener('pointercancel', reset, options);
-      window.addEventListener('blur', reset, options);
+      this.bindPlotPointer(this.canvas, 'time', move, options);
+      window.addEventListener('blur', () => { this.endDrag(); reset(); }, options);
       this.addEventListener('keydown', (event) => {
         if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home'].includes(event.key)) return;
         event.preventDefault();
@@ -126,7 +123,53 @@
       this.measure();
     }
 
+    pointerPosition(event, plot) {
+      const rect = plot.getBoundingClientRect();
+      if (!rect.width || !rect.height) return null;
+      const touch = this.drag?.touch && this.drag.pointerId === event.pointerId;
+      const point = {
+        x: clamp((event.clientX - rect.left) / rect.width, 0, 1),
+        y: clamp((event.clientY - rect.top - (touch ? 26 : 0)) / rect.height, 0, 1),
+      };
+      if (touch) this.drag.point = point;
+      return point;
+    }
+
+    bindPlotPointer(plot, domain, move, options) {
+      plot.addEventListener('pointerdown', event => {
+        if (event.isPrimary === false || event.button > 0 || this.drag || this.filterState.controlMode !== domain) return;
+        this.drag = {
+          plot, pointerId: event.pointerId,
+          touch: event.pointerType === 'touch' || (event.pointerType !== 'mouse' && this.coarsePointer.matches),
+        };
+        plot.setPointerCapture(event.pointerId);
+        move(event);
+      }, options);
+      plot.addEventListener('pointermove', event => {
+        if (this.drag && (this.drag.plot !== plot || this.drag.pointerId !== event.pointerId)) return;
+        // Mouse hover stays interactive; touch/pen move only during their capture.
+        if (!this.drag && event.pointerType !== 'mouse') return;
+        move(event);
+      }, options);
+      const finish = event => {
+        if (this.drag?.plot !== plot || this.drag.pointerId !== event.pointerId) return;
+        if (event.type === 'pointerup') move(event);
+        this.endDrag();
+        this.animate();
+      };
+      plot.addEventListener('pointerup', finish, options);
+      plot.addEventListener('pointercancel', finish, options);
+      plot.addEventListener('lostpointercapture', finish, options);
+    }
+
+    endDrag() {
+      const drag = this.drag;
+      this.drag = null;
+      if (drag?.plot.hasPointerCapture(drag.pointerId)) drag.plot.releasePointerCapture(drag.pointerId);
+    }
+
     reset() {
+      this.endDrag();
       this.targetCenterFrequency = 0;
       this.frequencyVelocity = 0;
       this.targetCenterX = 0.5;
@@ -155,6 +198,7 @@
       this.width = width;
       this.height = height;
       this.dpr = dpr;
+      this.timeGlow = null;
       this.canvas.width = Math.round(width * dpr);
       this.canvas.height = Math.round(height * dpr);
       this.context.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -196,12 +240,14 @@
         // Small integration steps keep the damped spring stable on slower frames.
         const steps = Math.ceil(dt / (1 / 120));
         const step = dt / steps;
+        const stiffness = this.drag?.touch ? 420 : 190;
+        const damping = this.drag?.touch ? 38 : 25;
         for (let i = 0; i < steps; i++) {
-          this.frequencyVelocity += ((this.targetCenterFrequency - this.filterState.centerFrequency) * 190 - this.frequencyVelocity * 25) * step;
+          this.frequencyVelocity += ((this.targetCenterFrequency - this.filterState.centerFrequency) * stiffness - this.frequencyVelocity * damping) * step;
           this.filterState.centerFrequency += this.frequencyVelocity * step;
-          this.velocityX += ((this.targetCenterX - this.currentCenterX) * 190 - this.velocityX * 25) * step;
+          this.velocityX += ((this.targetCenterX - this.currentCenterX) * stiffness - this.velocityX * damping) * step;
           this.currentCenterX += this.velocityX * step;
-          this.velocityY += ((this.targetCursorY - this.currentCursorY) * 190 - this.velocityY * 25) * step;
+          this.velocityY += ((this.targetCursorY - this.currentCursorY) * stiffness - this.velocityY * damping) * step;
           this.currentCursorY += this.velocityY * step;
         }
         const traveled = Math.abs((this.currentCenterX - this.emissionX) * this.width);
@@ -282,6 +328,15 @@
       this.renderTime(1);
       this.frequencyContext.clearRect(0, 0, this.width, this.height);
       this.spectrum.render(this.frequencyContext, this.width, this.height, 1);
+      if (this.drag?.touch && this.drag.point) {
+        const ctx = this.drag.plot === this.canvas ? this.context : this.frequencyContext;
+        const { x, y } = this.drag.point;
+        ctx.globalAlpha = 0.55;
+        ctx.strokeStyle = '#ffc1ac';
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.arc(x * this.width, y * this.height, 7, 0, Math.PI * 2); ctx.stroke();
+        ctx.globalAlpha = 1;
+      }
     }
 
     renderTime(opacity) {
@@ -292,11 +347,14 @@
       const amplitude = this.filterState.amplitude * this.height / 2;
       ctx.globalAlpha = opacity;
       // Canvas coordinates remain CSS pixels; only the backing store uses DPR.
-      const glow = ctx.createRadialGradient(sourceX, baseline, 0, sourceX, baseline, this.height * 0.65);
-      glow.addColorStop(0, 'rgba(255, 77, 112, 0.085)');
-      glow.addColorStop(0.4, 'rgba(202, 55, 83, 0.035)');
-      glow.addColorStop(1, 'rgba(110, 30, 55, 0)');
-      ctx.fillStyle = glow;
+      if (!this.timeGlow || this.glowX !== sourceX) {
+        this.timeGlow = ctx.createRadialGradient(sourceX, baseline, 0, sourceX, baseline, this.height * 0.65);
+        this.timeGlow.addColorStop(0, 'rgba(255, 77, 112, 0.085)');
+        this.timeGlow.addColorStop(0.4, 'rgba(202, 55, 83, 0.035)');
+        this.timeGlow.addColorStop(1, 'rgba(110, 30, 55, 0)');
+        this.glowX = sourceX;
+      }
+      ctx.fillStyle = this.timeGlow;
       ctx.fillRect(0, 0, this.width, this.height);
       ctx.strokeStyle = '#c5a7b6';
       ctx.lineWidth = 1;
@@ -348,6 +406,7 @@
     }
 
     disconnectedCallback() {
+      this.endDrag();
       cancelAnimationFrame(this.frame);
       this.resize?.disconnect();
       this.events?.abort();

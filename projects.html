@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Projects — Alan Xie</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -47,7 +48,7 @@
         </header>
 
         <div class="project-grid project-grid--centered">
-          <article class="project-card">
+          <article class="project-card" data-project-detail="sdr">
             <h2>SDR Signal Analysis and Demodulation</h2>
             <p>
               Short description of the problem, your role, and the outcome.
@@ -57,7 +58,7 @@
               <a href="#">Source</a>
             </div>
           </article>
-          <article class="project-card">
+          <article class="project-card" data-project-detail="fpga">
             <h2>DMA-to-FFT FPGA Spectrum Analyzer</h2>
             <p>
               Stack, timeline, or a metric that makes the work tangible.
@@ -66,7 +67,7 @@
               <a href="#">Details</a>
             </div>
           </article>
-          <article class="project-card">
+          <article class="project-card" data-project-detail="rf">
             <h2>E2E RF Frontend System</h2>
             <p>
               Personal tools, open source, or creative coding — whatever you
@@ -87,5 +88,7 @@
     </footer>
 
     <script src="main.js"></script>
+    <script src="portfolio-data.js"></script>
+    <script src="portfolio-details.js"></script>
   </body>
 </html>

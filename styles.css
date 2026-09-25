@@ -2528,3 +2528,124 @@ sinc-wave:focus-visible {
   align-items: baseline;
   column-gap: 1rem;
 }
+
+/* Only the selected plotting surface owns a direct-manipulation gesture. */
+.page-home sinc-wave { touch-action: auto; }
+.page-home sinc-wave canvas { touch-action: pan-y pinch-zoom; }
+.page-home sinc-wave[data-control-mode="time"] .time-canvas,
+.page-home sinc-wave[data-control-mode="frequency"] .frequency-canvas,
+.frequency-slider {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+@media (max-width: 700px) {
+  .page-home .hero-wave { padding: 0.75rem; }
+  .page-home .section-hero { padding-inline: 0.75rem; }
+  .domain-heading { gap: 0.4rem; }
+}
+
+/* Deeper portfolio files share a single layout inside their existing folders. */
+.detail-trigger { cursor: pointer; }
+.detail-trigger:focus-visible { outline: 1px solid #ff887c; outline-offset: 5px; }
+.folder-panel > [hidden] { display: none !important; }
+
+.portfolio-detail {
+  min-width: 0;
+  animation: detail-enter 200ms ease-out;
+}
+
+.detail-toolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.detail-toolbar button {
+  min-height: 44px;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid #b9718730;
+  border-radius: 5px;
+  background: #21101955;
+  color: #e6b8c3;
+  font: 400 0.8rem var(--font-body);
+  cursor: pointer;
+}
+
+.detail-toolbar button:hover { border-color: #ff887c70; }
+.detail-title { color: #ff887c; font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 400; overflow-wrap: anywhere; }
+.detail-category { color: #b698a8; }
+.detail-content {
+  border-top: 1px solid #b9718728;
+  margin-top: 1.5rem;
+  padding-block: 1.5rem;
+  min-height: clamp(180px, 25dvh, 320px);
+  overflow-wrap: anywhere;
+}
+.detail-content img, .detail-content video { display: block; max-width: 100%; height: auto; margin-block: 1rem; }
+.detail-content pre { overflow-x: auto; padding: 1rem; background: #08050b; }
+.detail-links, .detail-attachments { margin-top: 1.5rem; }
+.detail-links h3, .detail-attachments h3 {
+  font: 400 0.7rem var(--font-body);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #bb8c9f;
+}
+.detail-link-row { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.detail-placeholder, .folder-panel a.detail-link, a.detail-link {
+  padding: 0.5rem 1rem;
+  border: 1px solid #b9718724;
+  border-radius: 5px;
+  font-size: 0.8rem;
+}
+.detail-placeholder { color: #8d7786; border-style: dashed; }
+.detail-attachment-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.detail-attachment, .folder-panel a.detail-attachment {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  min-height: 100px;
+  padding: 1rem;
+  border: 1px solid #b9718738;
+  border-radius: 7px;
+  background: #08050b55;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.detail-attachment.is-empty { border-style: dashed; color: #ad8d9d; }
+.detail-attachment small { color: #8e7787; }
+.standalone-detail {
+  width: 82vw;
+  max-width: 1300px;
+  max-height: 80dvh;
+  padding: clamp(1.5rem, 4vw, 4rem);
+  border: 1px solid #b9718740;
+  border-radius: 12px;
+  background: #0f0913f7;
+  color: var(--ink);
+}
+.standalone-detail::backdrop { background: #08050b80; }
+@keyframes detail-enter { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+@media (max-width: 700px) {
+  .detail-attachment-row { grid-template-columns: 1fr; }
+  .standalone-detail { width: 92vw; }
+}
+@media (prefers-reduced-motion: reduce) { .portfolio-detail { animation: none; } }
+
+
+/* The populated SDR repository action stays compact and touch-friendly. */
+.detail-sdr .detail-link-row > a.detail-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: fit-content;
+  min-height: 44px;
+  padding: 0.55rem 1rem;
+}
+
+.detail-sdr .detail-link:hover { border-color: #ff887c70; }
+.detail-sdr .detail-link:focus-visible { outline: 1px solid #ff887c; outline-offset: 3px; }

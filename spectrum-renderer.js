@@ -3,6 +3,7 @@
 window.SpectrumRenderer = class SpectrumRenderer {
   constructor() { this.bins = []; this.noiseClock = 0; this.revealTime = 0; }
   resize(width) {
+    this.glow = null;
     const count = Math.max(49, Math.min(201, Math.round(width / 8) | 1));
     const old = this.bins;
     this.bins = Array.from({ length: count }, (_, i) => ({
@@ -48,11 +49,15 @@ window.SpectrumRenderer = class SpectrumRenderer {
   }
   render(ctx, width, height, opacity) {
     const baseline = height * 0.9;
-    const glow = ctx.createRadialGradient(width / 2, baseline, 0, width / 2, baseline, height * 0.65);
-    glow.addColorStop(0, 'rgba(255, 77, 112, 0.07)');
-    glow.addColorStop(1, 'rgba(110, 30, 55, 0)');
+    if (!this.glow || this.glowHeight !== height || this.glowWidth !== width) {
+      this.glow = ctx.createRadialGradient(width / 2, baseline, 0, width / 2, baseline, height * 0.65);
+      this.glow.addColorStop(0, 'rgba(255, 77, 112, 0.07)');
+      this.glow.addColorStop(1, 'rgba(110, 30, 55, 0)');
+      this.glowHeight = height;
+      this.glowWidth = width;
+    }
     ctx.globalAlpha = opacity;
-    ctx.fillStyle = glow; ctx.fillRect(0, 0, width, height);
+    ctx.fillStyle = this.glow; ctx.fillRect(0, 0, width, height);
     ctx.globalAlpha = opacity * 0.16;
     ctx.strokeStyle = '#c5a7b6'; ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(0, baseline); ctx.lineTo(width, baseline); ctx.stroke();
