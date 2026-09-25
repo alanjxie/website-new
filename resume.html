@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" class="home-theme">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Résumé — Alan Xie</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="theme-cosmic">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="logo" href="index.html">Alan J. <span class="logo-accent">Xie</span></a>
+        <nav class="nav" aria-label="Primary">
+          <a href="index.html">Welcome</a>
+          <a href="resume.html" aria-current="page">Résumé</a>
+          <a href="projects.html">Projects</a>
+        </nav>
+        <button
+          type="button"
+          class="nav-toggle"
+          aria-expanded="false"
+          aria-controls="nav-panel"
+          aria-label="Open menu"
+        >
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+      <div id="nav-panel" class="nav-panel" hidden>
+        <a href="index.html">Welcome</a>
+        <a href="resume.html" aria-current="page">Résumé</a>
+        <a href="projects.html">Projects</a>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="section section-alt">
+        <div class="section-inner">
+          <header class="section-header section-header--resume">
+            <div class="resume-header-row">
+              <div class="resume-header-titles">
+                <h1>Résumé</h1>
+              </div>
+              <a class="btn btn-outline resume-download-btn" href="Alan-Xie-Resume.pdf" download="Alan-Xie-Resume.pdf">Download</a>
+            </div>
+          </header>
+
+          <div class="resume-pdf-frame">
+            <iframe
+              class="resume-pdf-embed"
+              src="Alan-Xie-Resume.pdf"
+              title="Alan Xie résumé (PDF)"
+            ></iframe>
+          </div>
+          <p class="resume-pdf-fallback">
+            PDF not showing?
+            <a href="Alan-Xie-Resume.pdf" download="Alan-Xie-Resume.pdf">Download the résumé</a>
+            instead.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <p class="footer-copy">© <span id="year"></span> Alan Xie. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="main.js"></script>
+  </body>
+</html>

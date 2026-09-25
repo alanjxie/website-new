@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" class="home-theme">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projects — Alan Xie</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="theme-cosmic">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="logo" href="index.html">Alan J. <span class="logo-accent">Xie</span></a>
+        <nav class="nav" aria-label="Primary">
+          <a href="index.html">Welcome</a>
+          <a href="resume.html">Résumé</a>
+          <a href="projects.html" aria-current="page">Projects</a>
+        </nav>
+        <button
+          type="button"
+          class="nav-toggle"
+          aria-expanded="false"
+          aria-controls="nav-panel"
+          aria-label="Open menu"
+        >
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+      <div id="nav-panel" class="nav-panel" hidden>
+        <a href="index.html">Welcome</a>
+        <a href="resume.html">Résumé</a>
+        <a href="projects.html" aria-current="page">Projects</a>
+      </div>
+    </header>
+
+    <main id="main" class="main--projects">
+      <div class="section-inner">
+        <header class="section-header">
+          <h1>Projects</h1>
+        </header>
+
+        <div class="project-grid project-grid--centered">
+          <article class="project-card">
+            <h2>SDR Signal Analysis and Demodulation</h2>
+            <p>
+              Short description of the problem, your role, and the outcome.
+            </p>
+            <div class="project-links">
+              <a href="#">Live</a>
+              <a href="#">Source</a>
+            </div>
+          </article>
+          <article class="project-card">
+            <h2>DMA-to-FFT FPGA Spectrum Analyzer</h2>
+            <p>
+              Stack, timeline, or a metric that makes the work tangible.
+            </p>
+            <div class="project-links">
+              <a href="#">Details</a>
+            </div>
+          </article>
+          <article class="project-card">
+            <h2>E2E RF Frontend System</h2>
+            <p>
+              Personal tools, open source, or creative coding — whatever you
+              want to highlight.
+            </p>
+            <div class="project-links">
+              <a href="#">GitHub</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <p class="footer-copy">© <span id="year"></span> Alan Xie. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="main.js"></script>
+  </body>
+</html>

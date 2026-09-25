@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" class="home-theme">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alan Xie — Signal & Systems</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="theme-cosmic page-home">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="logo" href="index.html">Alan J. <span class="logo-accent">Xie</span></a>
+        <nav class="folder-nav" aria-label="Primary">
+          <div class="folder">
+            <button class="folder-tab" type="button" aria-expanded="false" aria-controls="folder-about">About <span aria-hidden="true">⌄</span></button>
+            <div class="folder-panel" id="folder-about" role="region" aria-labelledby="title-about" inert>
+              <div class="folder-heading"><h2 id="title-about">About me</h2><button type="button" class="folder-close" aria-label="Close About me">×</button></div>
+              <div class="portfolio-about">
+                <img src="alan-portrait.png" alt="Portrait of Alan Xie" width="1024" height="907" />
+                <div>
+              <p>Hello! My name is Alan Xie, I'm a second year EE major at Georgia Tech, concentrating in signal processing and telecommunications.</p>
+              <p>My hope is to get involved with both wireless communication and RF systems, eventually branching out into chip design and RFICs. Please feel free to explore my projects, experience, and the signal visualizer!</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="folder">
+            <button class="folder-tab" type="button" aria-expanded="false" aria-controls="folder-projects">Projects <span aria-hidden="true">⌄</span></button>
+            <div class="folder-panel" id="folder-projects" role="region" aria-labelledby="title-projects" inert>
+              <div class="folder-heading"><h2 id="title-projects">Projects</h2><button type="button" class="folder-close" aria-label="Close Projects">×</button></div>
+              <ul class="folder-projects">
+                <li><span class="portfolio-index">01 / Signal processing</span><h3>SDR Signal Analysis and Demodulation</h3></li>
+                <li><span class="portfolio-index">02 / Digital hardware</span><h3>DMA-to-FFT FPGA Spectrum Analyzer</h3></li>
+                <li><span class="portfolio-index">03 / RF Systems</span><h3>E2E RF Frontend System</h3></li>
+              </ul>
+            </div>
+          </div>
+          <div class="folder">
+            <button class="folder-tab" type="button" aria-expanded="false" aria-controls="folder-work">Experience <span aria-hidden="true">⌄</span></button>
+            <div class="folder-panel" id="folder-work" role="region" aria-labelledby="title-work" inert>
+              <div class="folder-heading"><h2 id="title-work">Experience</h2><button type="button" class="folder-close" aria-label="Close Experience">×</button></div>
+              <div class="experience-list" aria-label="Experience entries"></div>
+              <a class="btn btn-outline experience-download" href="Alan-Xie-Resume.pdf" download>Download resume <span aria-hidden="true">↓</span></a>
+            </div>
+          </div>
+          <div class="folder">
+            <button class="folder-tab" type="button" aria-expanded="false" aria-controls="folder-contact">Contact <span aria-hidden="true">⌄</span></button>
+            <div class="folder-panel" id="folder-contact" role="region" aria-labelledby="title-contact" inert>
+              <div class="folder-heading"><h2 id="title-contact">Contact</h2><button type="button" class="folder-close" aria-label="Close Contact">×</button></div>
+              <ul class="contact-links">
+                <li><span>Email:</span><a href="mailto:axie74@gatech.edu">axie74@gatech.edu</a></li>
+                <li><span>LinkedIn:</span><a href="https://www.linkedin.com/in/alanjxie/">linkedin.com/in/alanjxie</a></li>
+                <li><span>GitHub:</span><a href="https://github.com/alanjxie">github.com/alanjxie</a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section id="signal" class="section section-hero">
+        <div class="section-inner hero-grid">
+          <figure class="hero-wave">
+            <sinc-wave tabindex="0" role="group" aria-label="Linked time and frequency views. The selected control mode chooses the editable plot. Time: X shifts time and Y controls signed amplitude. Frequency: X shifts center frequency and Y controls gain. Arrow keys also control the selected plot. Samples grow outward from the source. Press Home to center it."></sinc-wave>
+            <div class="signal-controls">
+              <div class="control-mode" role="group" aria-label="Choose the directly editable graph">
+                <button type="button" data-control-mode="frequency" aria-pressed="false">Frequency control</button>
+                <button type="button" data-control-mode="time" aria-pressed="true">Time control</button>
+              </div>
+            <div class="frequency-control">
+              <label for="signal-frequency">Bandwidth</label>
+              <input id="signal-frequency" class="frequency-slider" type="range" min="0.5" max="2.5" step="0.01" value="1" aria-valuetext="1.00 times" />
+              <output for="signal-frequency">1.00×</output>
+              <button class="signal-reset" type="button">Reset</button>
+            </div>
+            </div>
+          </figure>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <p class="footer-copy">© <span id="year"></span> Alan Xie. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script src="spectrum-renderer.js"></script>
+    <script src="sinc-wave.js"></script>
+    <script src="experience.js"></script>
+    <script src="folder-nav.js"></script>
+  </body>
+</html>

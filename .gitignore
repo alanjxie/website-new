@@ -1,0 +1,12 @@
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*.tmp
+
+# Local server / env (if you add these later)
+.env
+.env.*
+
+# Do NOT add rules like *.pdf here — portrait, hobby photo, and résumé PDF
+# live next to the HTML files and need to be committed for hosting to work.

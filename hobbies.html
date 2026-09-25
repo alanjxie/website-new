@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" class="home-theme">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hobbies — Alan Xie</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="theme-cosmic">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="logo" href="index.html">Alan J. <span class="logo-accent">Xie</span></a>
+        <nav class="nav" aria-label="Primary">
+          <a href="index.html">Welcome</a>
+          <a href="resume.html">Résumé</a>
+          <a href="projects.html">Projects</a>
+        </nav>
+        <button
+          type="button"
+          class="nav-toggle"
+          aria-expanded="false"
+          aria-controls="nav-panel"
+          aria-label="Open menu"
+        >
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+      <div id="nav-panel" class="nav-panel" hidden>
+        <a href="index.html">Welcome</a>
+        <a href="resume.html">Résumé</a>
+        <a href="projects.html">Projects</a>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="section section-alt">
+        <div class="section-inner">
+          <header class="section-header">
+            <h1>Hobbies</h1>
+          </header>
+
+          <div class="project-grid project-grid--hobbies">
+            <article class="project-card">
+              <h2>Gaming</h2>
+              <p>
+                I love RPG games. My all-time favorite game is Terraria, but I
+                enjoy other games such as Valorant, Marvel Rivals, and osu!.
+              </p>
+            </article>
+            <article class="project-card">
+              <h2>Music</h2>
+              <p>
+                Part of the reason why I’m so interested in DSP is the
+                intersection with audio. I use playlists as a way to capture
+                memories and also to encapsulate emotions like joy, love, and
+                even bittersweet nostalgia. Here’s a link to my favorite Spotify
+                playlist:
+              </p>
+              <div class="hobby-cta">
+                <a
+                  class="btn btn-spotify"
+                  href="https://open.spotify.com/playlist/5HPxPT5oBMxxPArsPpW7ds?si=816367802156435a"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Open “time machine bops” on Spotify</a>
+              </div>
+            </article>
+            <article class="project-card">
+              <h2>Gym</h2>
+              <p>
+                I’ve also been going to the gym as a way to stay healthy and
+                active in my life. My favorite exercise is barbell squats, and I
+                enjoy playing basketball in my free time.
+              </p>
+            </article>
+            <article class="project-card">
+              <h2>Cooking</h2>
+              <p>
+                I’m insanely passionate about cooking and food. As I was growing
+                up my mom inspired me to branch out and cook for myself
+                occasionally. Check below for the three most recent dishes I’ve
+                made!
+              </p>
+            </article>
+          </div>
+
+          <div class="hobby-photo-gallery" aria-label="Three recent photo slots">
+            <figure class="hobby-photo-slot">
+              <div class="hobby-photo-media">
+                <img
+                  src="hobby-food-1.png"
+                  alt="Seared steak with garlic and greens on a plate"
+                  width="768"
+                  height="1024"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <figcaption class="hobby-photo-caption">
+                Placeholder caption — snapshot 1.
+              </figcaption>
+            </figure>
+            <figure
+              class="hobby-photo-slot hobby-photo-slot--empty"
+              aria-label="Photo coming soon"
+            >
+              <div class="hobby-photo-media hobby-photo-media--empty">
+                <span class="hobby-photo-placeholder">Coming soon</span>
+              </div>
+              <figcaption class="hobby-photo-caption">
+                Placeholder caption — photo slot 2.
+              </figcaption>
+            </figure>
+            <figure
+              class="hobby-photo-slot hobby-photo-slot--empty"
+              aria-label="Photo coming soon"
+            >
+              <div class="hobby-photo-media hobby-photo-media--empty">
+                <span class="hobby-photo-placeholder">Coming soon</span>
+              </div>
+              <figcaption class="hobby-photo-caption">
+                Placeholder caption — photo slot 3.
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <p class="footer-copy">© <span id="year"></span> Alan Xie. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="main.js"></script>
+  </body>
+</html>
